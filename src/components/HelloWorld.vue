@@ -128,10 +128,10 @@ export default {
       }
     },
     clickMe(time, timeAll) {
-      this.activeButton = !this.activeButton
-        this.passiveButton = !this.passiveButton
-      this.round++
       if (this.freeBoad) {
+        this.activeButton = !this.activeButton
+      this.passiveButton = !this.passiveButton
+        this.round++
         this.allRandom = []
         this.allPlayer = []
         if (this.roundShow == true) {
@@ -194,7 +194,9 @@ export default {
         audio.play();
       }
     },
-    Normal () {
+    Normal() {
+      this.activeButton = false
+      this.passiveButton = true
       this.freeBoad = true
       this.light = true
       this.sound = true
@@ -203,7 +205,7 @@ export default {
       this.pointShow2 = false
       this.pointShow3 = false
     },
-    Sound () {
+    Sound() {
       this.sound = !this.sound
       this.light = true
       this.freeBoad = true
@@ -212,17 +214,19 @@ export default {
       this.pointShow3 = false
       this.pointShow4 = false
     },
-    Light () {
+    Light() {
       this.light = !this.light
       this.sound = true
       this.freeBoad = true
-       this.pointShow3 = true
+      this.pointShow3 = true
       this.pointShow1 = false
       this.pointShow2 = false
       this.pointShow4 = false
     },
-    FreeBoad () {
+    FreeBoad() {
       this.freeBoad = !this.freeBoad
+      this.activeButton = true
+      this.passiveButton = false
       this.sound = true
       this.light = true
       this.pointShow4 = true
@@ -234,14 +238,15 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
 @import '../Style/StyleAll'
 h1
   margin-bottom: 70px
+
 .container, .imgContainer
   display: flex
   justify-content: center
+
 .imgContainer
   position: relative
   z-index: 100
@@ -251,30 +256,39 @@ h1
 
 .columnLeft, .columnRight
   width: 300px
+
 .columnRight
   text-align: left
   padding-left: 60px
   padding-top: 40px
+
 .All
   width: 100px
   height: 100px
   opacity: .4
+
 .clRed
   background: red
   border-top-right-radius: 360%
+
 .clBlue
   background: blue
   border-top-left-radius: 360%
+
 .clGreen
   background: green
   border-bottom-right-radius: 360%
+
 .clYellow
   background: yellow
   border-bottom-left-radius: 360%
+
 .opacityNone
   opacity: 1
+
 .passiveButton, .activeButton
   position: relative
+
 .shadow
   position: absolute
   top: 0
@@ -284,6 +298,7 @@ h1
   height: 203px
   border-radius: 50%
   background: white
+
 .button
   width: 100px
   height: 35px
@@ -293,6 +308,7 @@ h1
   border: none
   outline: none
   box-shadow: 3px 3px 5px gainsboro
+
 .optionsContainer
   display: flex
   position: relative
