@@ -5,19 +5,15 @@
       <div class="columnLeft">
         <div v-show="activeButton" class="activeButton">
           <div class="imgContainer">
-            <div class="All clBlue" v-bind:class="{opacityNone: allClass[1].opac}" @click="buttonClick(1)"
-                 @click.prevent="playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')">
+            <div class="All clBlue" v-bind:class="{opacityNone: allClass[1].opac}" @click="buttonClick(1)">
             </div>
-            <div class="All clRed" v-bind:class="{opacityNone: allClass[0].opac}" @click="buttonClick(0)"
-                 @click.prevent="playSound(require('./glass_ping-Go445-1207030150.mp3'))">
+            <div class="All clRed" v-bind:class="{opacityNone: allClass[0].opac}" @click="buttonClick(0)">
             </div>
           </div>
           <div class="imgContainer">
-            <div class="All clYellow" v-bind:class="{opacityNone: allClass[3].opac}" @click="buttonClick(3)"
-                 @click.prevent="playSound(require('./glass_ping-Go445-1207030150.mp3'))">
+            <div class="All clYellow" v-bind:class="{opacityNone: allClass[3].opac}" @click="buttonClick(3)">
             </div>
-            <div class="All clGreen" v-bind:class="{opacityNone: allClass[2].opac}" @click="buttonClick(2)"
-                 @click.prevent="playSound('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3')">
+            <div class="All clGreen" v-bind:class="{opacityNone: allClass[2].opac}" @click="buttonClick(2)">
             </div>
           </div>
           <div class="shadow">
@@ -52,11 +48,11 @@
           <p>Cound only</p>
         </div>
         <div class="optionsContainer">
-          <button></button>
+          <button @click="Light"></button>
           <p>Light only</p>
         </div>
         <div class="optionsContainer">
-          <button></button>
+          <button @click="FreeBoad"></button>
           <p>Free board</p>
         </div>
       </div>
@@ -92,70 +88,92 @@ export default {
       passiveButton: true,
       round: 1,
       roundShow: false,
-      sound: true
+      sound: true,
+      light: true,
+      freeBoad: true
     }
   },
   methods: {
     buttonClick(a) {
       this.allPlayer.push(a)
-      this.allClass[a].opac = !this.allClass[a].opac
+      if (this.sound) {
+        this.allClass[a].opac = !this.allClass[a].opac
+      }
       setTimeout(() => this.allClass[a].opac = false, 300)
+      if (this.light) {
+        if (a == 0) {
+          this.playSound(require('./glass_ping-Go445-1207030150.mp3'))
+        }
+        if (a == 1) {
+          this.playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')
+        }
+        if (a == 2) {
+          this.playSound('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3')
+        }
+        if (a == 3) {
+          this.playSound(require('./glass_ping-Go445-1207030150.mp3'))
+        }
+      }
     },
     clickMe(time, timeAll) {
-      this.allRandom = []
-      this.allPlayer = []
       this.activeButton = !this.activeButton
-      this.passiveButton = !this.passiveButton
-      if (this.roundShow == true) {
-        this.roundShow = !this.roundShow
-      }
-      let timerId = setInterval(() => {
-        let rand = 0 + Math.random() * (4 + 0 - 0);
-        let rand1 = Math.floor(rand)
-        this.allRandom.push(rand1)
-        if (this.sound) {
-          this.allClass[rand1].opac = !this.allClass[rand1].opac
-        }
-        if (rand1 == 0) {
-          const audio = new Audio(require('./glass_ping-Go445-1207030150.mp3'))
-          audio.play();
-        }
-        if (rand1 == 1) {
-          const audio = new Audio('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3');
-          audio.play();
-        }
-        if (rand1 == 2) {
-          const audio = new Audio('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3');
-          audio.play();
-        }
-        if (rand1 == 3) {
-          const audio = new Audio(require('./glass_ping-Go445-1207030150.mp3'))
-          audio.play();
-        }
-        setTimeout(() => this.allClass[rand1].opac = false, 300)
-      }, 1500)
-      setTimeout(() => {
-        clearInterval(timerId);
-        //alert('stop');
-      }, time);
-      setTimeout(() => {
-        if (JSON.stringify(this.allRandom) === JSON.stringify(this.allPlayer)) {
-          this.activeButton = !this.activeButton
-          this.passiveButton = !this.passiveButton
-          this.round++
-          time = time + 1500
-          timeAll = timeAll + 2500
-          this.clickMe(time, timeAll)
-        } else {
-          //alert('noy')
+        this.passiveButton = !this.passiveButton
+      if (this.freeBoad) {
+        this.allRandom = []
+        this.allPlayer = []
+        if (this.roundShow == true) {
           this.roundShow = !this.roundShow
-          this.activeButton = !this.activeButton
-          this.passiveButton = !this.passiveButton
-          setTimeout(() => {
-            this.round = 1, this.roundShow = false
-          }, 3000)
         }
-      }, timeAll)
+        let timerId = setInterval(() => {
+          let rand = 0 + Math.random() * (4 + 0 - 0);
+          let rand1 = Math.floor(rand)
+          this.allRandom.push(rand1)
+          if (this.sound) {
+            this.allClass[rand1].opac = !this.allClass[rand1].opac
+          }
+          if (this.light) {
+            if (rand1 == 0) {
+              const audio = new Audio(require('./glass_ping-Go445-1207030150.mp3'))
+              audio.play();
+            }
+            if (rand1 == 1) {
+              const audio = new Audio('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3');
+              audio.play();
+            }
+            if (rand1 == 2) {
+              const audio = new Audio('http://soundbible.com/mp3/Elevator Ding-SoundBible.com-685385892.mp3');
+              audio.play();
+            }
+            if (rand1 == 3) {
+              const audio = new Audio(require('./glass_ping-Go445-1207030150.mp3'))
+              audio.play();
+            }
+          }
+          setTimeout(() => this.allClass[rand1].opac = false, 300)
+        }, 1500)
+        setTimeout(() => {
+          clearInterval(timerId);
+          //alert('stop');
+        }, time);
+        setTimeout(() => {
+          if (JSON.stringify(this.allRandom) === JSON.stringify(this.allPlayer)) {
+            this.activeButton = !this.activeButton
+            this.passiveButton = !this.passiveButton
+            this.round++
+            time = time + 1500
+            timeAll = timeAll + 2500
+            this.clickMe(time, timeAll)
+          } else {
+            //alert('noy')
+            this.roundShow = !this.roundShow
+            this.activeButton = !this.activeButton
+            this.passiveButton = !this.passiveButton
+            setTimeout(() => {
+              this.round = 1, this.roundShow = false
+            }, 3000)
+          }
+        }, timeAll)
+      }
     },
     playSound(sound) {
       if (sound) {
@@ -165,6 +183,18 @@ export default {
     },
     Sound () {
       this.sound = !this.sound
+      this.light = true
+      this.freeBoad = true
+    },
+    Light () {
+      this.light = !this.light
+      this.sound = true
+      this.freeBoad = true
+    },
+    FreeBoad () {
+      this.freeBoad = !this.freeBoad
+      this.sound = true
+      this.light = true
     }
   }
 }
@@ -175,53 +205,38 @@ export default {
 @import '../Style/StyleAll'
 h1
   margin-bottom: 70px
-
 .container, .imgContainer
   display: flex
   justify-content: center
-
 .imgContainer
   position: relative
   z-index: 100
-
 .columnLeft, .columnRight
   width: 300px
-
 .columnRight
   text-align: left
   padding-left: 60px
   padding-top: 40px
-
 .All
   width: 100px
   height: 100px
   opacity: .4
-
 .clRed
   background: red
   border-top-right-radius: 360%
-
-
-
 .clBlue
   background: blue
   border-top-left-radius: 360%
-
-
 .clGreen
   background: green
   border-bottom-right-radius: 360%
-
 .clYellow
   background: yellow
   border-bottom-left-radius: 360%
-
 .opacityNone
   opacity: 1
-
 .passiveButton, .activeButton
   position: relative
-
 .shadow
   position: absolute
   top: 0
@@ -231,7 +246,6 @@ h1
   height: 203px
   border-radius: 50%
   background: white
-
 .button
   width: 100px
   height: 35px
@@ -242,7 +256,6 @@ h1
   border: none
   outline: none
   box-shadow: 3px 3px 5px gainsboro
-
 .optionsContainer
   display: flex
 </style>
