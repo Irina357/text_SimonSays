@@ -34,25 +34,33 @@
       </div>
       <div class="columnRight">
         <h2>Round: {{ round }}</h2>
-        <div v-show="roundShow">
-          <p>Sorry, you lost after {{ round }} rounds!</p>
+        <div class="TextRoundContainer">
+          <p v-show="roundShow">Sorry, you lost after {{ round }} rounds!</p>
         </div>
         <button class="button" @click="clickMe(time, timeAll)">Start</button>
         <h2>Game Options</h2>
         <div class="optionsContainer">
-          <button></button>
+          <div class="optionsPoint" v-show="pointShow1">
+          </div>
+          <button class="buttonOptions" @click="Normal"></button>
           <p>Normal</p>
         </div>
         <div class="optionsContainer">
-          <button @click="Sound"></button>
+          <div class="optionsPoint" v-show="pointShow2">
+          </div>
+          <button class="buttonOptions" @click="Sound"></button>
           <p>Cound only</p>
         </div>
         <div class="optionsContainer">
-          <button @click="Light"></button>
+          <div class="optionsPoint" v-show="pointShow3">
+          </div>
+          <button class="buttonOptions" @click="Light"></button>
           <p>Light only</p>
         </div>
         <div class="optionsContainer">
-          <button @click="FreeBoad"></button>
+          <div class="optionsPoint" v-show="pointShow4">
+          </div>
+          <button class="buttonOptions" @click="FreeBoad"></button>
           <p>Free board</p>
         </div>
       </div>
@@ -86,11 +94,15 @@ export default {
       timeAll: 4000,
       activeButton: false,
       passiveButton: true,
-      round: 1,
+      round: 0,
       roundShow: false,
       sound: true,
       light: true,
-      freeBoad: true
+      freeBoad: true,
+      pointShow1: false,
+      pointShow2: false,
+      pointShow3: false,
+      pointShow4: false
     }
   },
   methods: {
@@ -118,6 +130,7 @@ export default {
     clickMe(time, timeAll) {
       this.activeButton = !this.activeButton
         this.passiveButton = !this.passiveButton
+      this.round++
       if (this.freeBoad) {
         this.allRandom = []
         this.allPlayer = []
@@ -153,13 +166,13 @@ export default {
         }, 1500)
         setTimeout(() => {
           clearInterval(timerId);
-          //alert('stop');
+
         }, time);
         setTimeout(() => {
           if (JSON.stringify(this.allRandom) === JSON.stringify(this.allPlayer)) {
             this.activeButton = !this.activeButton
             this.passiveButton = !this.passiveButton
-            this.round++
+
             time = time + 1500
             timeAll = timeAll + 2500
             this.clickMe(time, timeAll)
@@ -169,7 +182,7 @@ export default {
             this.activeButton = !this.activeButton
             this.passiveButton = !this.passiveButton
             setTimeout(() => {
-              this.round = 1, this.roundShow = false
+              this.round = 0, this.roundShow = false
             }, 3000)
           }
         }, timeAll)
@@ -181,20 +194,41 @@ export default {
         audio.play();
       }
     },
+    Normal () {
+      this.freeBoad = true
+      this.light = true
+      this.sound = true
+      this.pointShow1 = true
+      this.pointShow4 = false
+      this.pointShow2 = false
+      this.pointShow3 = false
+    },
     Sound () {
       this.sound = !this.sound
       this.light = true
       this.freeBoad = true
+      this.pointShow2 = true
+      this.pointShow1 = false
+      this.pointShow3 = false
+      this.pointShow4 = false
     },
     Light () {
       this.light = !this.light
       this.sound = true
       this.freeBoad = true
+       this.pointShow3 = true
+      this.pointShow1 = false
+      this.pointShow2 = false
+      this.pointShow4 = false
     },
     FreeBoad () {
       this.freeBoad = !this.freeBoad
       this.sound = true
       this.light = true
+      this.pointShow4 = true
+      this.pointShow1 = false
+      this.pointShow2 = false
+      this.pointShow3 = false
     }
   }
 }
@@ -211,6 +245,10 @@ h1
 .imgContainer
   position: relative
   z-index: 100
+
+.TextRoundContainer
+  height: 30px
+
 .columnLeft, .columnRight
   width: 300px
 .columnRight
@@ -249,7 +287,6 @@ h1
 .button
   width: 100px
   height: 35px
-  margin-top: 30px
   margin-bottom: 30px
   border-radius: 5px
   background: cornflowerblue
@@ -258,4 +295,23 @@ h1
   box-shadow: 3px 3px 5px gainsboro
 .optionsContainer
   display: flex
+  position: relative
+
+.optionsPoint
+  position: absolute
+  width: 10px
+  height: 10px
+  border-radius: 50%
+  background: cornflowerblue
+  left: 5px
+  top: 4.5px
+
+.buttonOptions
+  outline: none
+  border: cornflowerblue 1px solid
+  width: 20px
+  height: 20px
+  border-radius: 50%
+  margin-right: 10px
+  margin-bottom: 10px
 </style>
