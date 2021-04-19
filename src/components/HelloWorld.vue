@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Hello</h1>
+    <h1>Simon Says</h1>
     <div class="container">
       <div class="columnLeft">
-        <div v-show="activeButton">
+        <div v-show="activeButton" class="activeButton">
           <div class="imgContainer">
             <div class="All clBlue" v-bind:class="{opacityNone: allClass[1].opac}" @click="buttonClick(1)"
                  @click.prevent="playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')">
@@ -41,10 +41,24 @@
         <div v-show="roundShow">
           <p>Sorry, you lost after {{ round }} rounds!</p>
         </div>
-        <button @click="clickMe(time, timeAll)">Click me</button>
-        <button @click.prevent="playSound('http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3')">
-          allPlayer
-        </button>
+        <button class="button" @click="clickMe(time, timeAll)">Start</button>
+        <h2>Game Options</h2>
+        <div class="optionsContainer">
+          <button></button>
+          <p>Normal</p>
+        </div>
+        <div class="optionsContainer">
+          <button @click="Sound"></button>
+          <p>Cound only</p>
+        </div>
+        <div class="optionsContainer">
+          <button></button>
+          <p>Light only</p>
+        </div>
+        <div class="optionsContainer">
+          <button></button>
+          <p>Free board</p>
+        </div>
       </div>
     </div>
   </div>
@@ -55,6 +69,7 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
+      text: 'Text',
       allClass: [
         {
           opac: false
@@ -76,7 +91,8 @@ export default {
       activeButton: false,
       passiveButton: true,
       round: 1,
-      roundShow: false
+      roundShow: false,
+      sound: true
     }
   },
   methods: {
@@ -97,7 +113,9 @@ export default {
         let rand = 0 + Math.random() * (4 + 0 - 0);
         let rand1 = Math.floor(rand)
         this.allRandom.push(rand1)
-        this.allClass[rand1].opac = !this.allClass[rand1].opac
+        if (this.sound) {
+          this.allClass[rand1].opac = !this.allClass[rand1].opac
+        }
         if (rand1 == 0) {
           const audio = new Audio(require('./glass_ping-Go445-1207030150.mp3'))
           audio.play();
@@ -144,6 +162,9 @@ export default {
         var audio = new Audio(sound);
         audio.play();
       }
+    },
+    Sound () {
+      this.sound = !this.sound
     }
   }
 }
@@ -151,6 +172,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
+@import '../Style/StyleAll'
+h1
+  margin-bottom: 70px
+
 .container, .imgContainer
   display: flex
   justify-content: center
@@ -163,7 +188,9 @@ export default {
   width: 300px
 
 .columnRight
-  padding-left: 20px
+  text-align: left
+  padding-left: 60px
+  padding-top: 40px
 
 .All
   width: 100px
@@ -192,7 +219,7 @@ export default {
 .opacityNone
   opacity: 1
 
-.passiveButton
+.passiveButton, .activeButton
   position: relative
 
 .shadow
@@ -204,4 +231,18 @@ export default {
   height: 203px
   border-radius: 50%
   background: white
+
+.button
+  width: 100px
+  height: 35px
+  margin-top: 30px
+  margin-bottom: 30px
+  border-radius: 5px
+  background: cornflowerblue
+  border: none
+  outline: none
+  box-shadow: 3px 3px 5px gainsboro
+
+.optionsContainer
+  display: flex
 </style>
