@@ -37,7 +37,9 @@
         <div class="TextRoundContainer">
           <p v-show="roundShow">Sorry, you lost after {{ round }} rounds!</p>
         </div>
-        <button class="button" @click="clickMe(time, timeAll)">Start</button>
+        <div class="buttonStart1" @click="clickMe(time, timeAll)">
+          <Button :text="text"/>
+        </div>
         <h2>Game Options</h2>
         <div class="optionsContainer">
           <div class="optionsPoint" v-show="pointShow1">
@@ -69,11 +71,12 @@
 </template>
 
 <script>
+import Button from './Button'
 export default {
   name: 'HelloWorld',
   data() {
     return {
-      text: 'Text',
+      text: 'Start',
       allClass: [
         {
           opac: false
@@ -104,6 +107,9 @@ export default {
       pointShow3: false,
       pointShow4: false
     }
+  },
+  components: {
+    Button
   },
   methods: {
     buttonClick(a) {
@@ -299,16 +305,6 @@ h1
   border-radius: 50%
   background: white
 
-.button
-  width: 100px
-  height: 35px
-  margin-bottom: 30px
-  border-radius: 5px
-  background: cornflowerblue
-  border: none
-  outline: none
-  box-shadow: 3px 3px 5px gainsboro
-
 .optionsContainer
   display: flex
   position: relative
@@ -330,4 +326,9 @@ h1
   border-radius: 50%
   margin-right: 10px
   margin-bottom: 10px
+
+.buttonStart1
+  width: 100px
+  height: 30px
+  margin-bottom: 30px
 </style>
